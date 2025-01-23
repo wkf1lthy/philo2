@@ -5,7 +5,7 @@ RM = rm -rf
 GDB = gdb
 
 # TESTING
-VAL = valgrind --leak-check=full --track-origin=yes
+VAL = valgrind --leak-check=full --track-origin=yes -g3
 SANITIZE_THREAD = -fsanitize=thread
 SANITIZE_ADDRESS = -fsanitize=address
 HELGRIND = valgrind --tool=helgrind
@@ -22,32 +22,30 @@ RED				:= \033[1;31m
 BOLD			:= \033[1;1m
 
 # PHILOSOPHERS
-NAME =	philo.a
+NAME = philo
 SRCS =  check_args.c \
 		main.c \
 		routine.c \
 		utils.c \
 		time.c \
+		threads.c \
+		init.c \
+		check.c
 
 OBJSDIR = objects
 OBJS = $(addprefix $(OBJSDIR)/,$(SRCS:.c=.o))
 
 # MAKE RULES
-all: $(NAME) philo
+all: $(NAME)
 
 $(NAME): $(OBJS)
-	@echo "$(GREEN)$(BOLD)Creating objects directory...$(RESET)"
-	ar -rcs $(NAME) $(OBJS)
-	@echo "$(GREEN)$(BOLD)Objects created!$(RESET)"
+	@echo "$(GREEN)$(BOLD)Creating executable...$(RESET)"
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	@echo "$(GREEN)$(BOLD)Executable created!$(RESET)"
 	
 $(OBJSDIR)/%.o: %.c
-	mkdir -p $(@D)
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-philo: $(PHILO_OBJ) $(NAME)
-	@echo "$(GREEN)$(BOLD)Creating executable...$(RESET)"
-	$(CC) $(CFLAGS) $(PHILO_OBJ) $(NAME) -o philo
-	@echo "$(GREEN)$(BOLD)Executable created!$(RESET)"
 
 clean:
 	@echo "$(YELLOW)$(BOLD)Removing objects...$(RESET)"
@@ -56,7 +54,7 @@ clean:
 
 fclean: clean
 	@echo "$(RED)$(BOLD)Removing executable...$(RESET)"
-	$(RM) philo philo.a
+	$(RM) $(NAME)
 	@echo "$(RED)$(BOLD)Executable removed!$(RESET)"
 
 re: fclean all

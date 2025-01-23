@@ -56,5 +56,10 @@ void				simulation(t_philo *ph);
 void				sleep_and_think(t_philo *ph);
 void				print_status(char *str, t_philo *ph);
 int					ft_exit(char *str);
+void				*is_dead(void *data);
+void				*thread(void *data);
+int					threading(t_p *p);
+int					initialize(t_p *p);
+void				init_mutex(t_p *p);
 
 #endif

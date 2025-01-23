@@ -15,8 +15,6 @@ int	check_death(t_philo *ph, int i)
 	return (0);
 }
 
-
-
 void	stop(t_p *p)
 {
 	int	i;
@@ -42,7 +40,7 @@ void	stop(t_p *p)
 int	ft_exit(char *str)
 {
 	printf("Error : ");
-	//printf(RED"%s"CLEAR, str);
+	printf("%s\n", str);
 	printf("./philo [Philos] [Die] [Eat] [Sleep] [Meals]\n");
 	return (0);
 }
